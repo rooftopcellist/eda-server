@@ -30,6 +30,8 @@ from rest_framework_simplejwt import views as jwt_views
 from aap_eda.core import views as core_views
 
 from . import views
+from django.views.generic.base import RedirectView
+
 
 router = routers.SimpleRouter()
 # basename has to be set when queryset is user-dependent
@@ -100,6 +102,11 @@ eda_v1_urls = [
     ),
     path("users/me/", views.CurrentUserView.as_view(), name="current-user"),
     *router.urls,
+    path('api/eda/v1', RedirectView.as_view(url='/api/eda/v1/')),
+]
+eda_urls = [
+    path("", views.ApiRootView.as_view(), name="api-root"),
+    path("", include(eda_v1_urls)),
 ]
 
 dab_urls = [
